@@ -20,7 +20,7 @@ cf bind-service redis-example-app redis
 cf start redis-example-app
 ```
 
-Alternatively, use the Concourse pipeline for using a Redis service broker:
+Alternatively, use the [Concourse](https://concourse-ci.org/) pipeline for using a Redis service broker:
 ```bash
 # Create a secrets file from the example
 cp pipeline-broker-secrets-example.yml pipeline-broker-secrets.yml
@@ -48,7 +48,7 @@ cf bind-service redis-example-app redis
 cf start redis-example-app
 ```
 
-Alternatively, use the Concourse pipeline for using a user provided service:
+Alternatively, use the [Concourse](https://concourse-ci.org/) pipeline for using a user provided service:
 ```bash
 # Create a secrets file from the example
 cp pipeline-cups-secrets-example.yml pipeline-cups-secrets.yml
