@@ -1,0 +1,51 @@
+# Use this pipeline if you are using a Redis service broker
+#
+# fly -t ci sp -p cf-redis-example-app -c pipeline-broker.yml -l pipeline-broker-secrets.yml
+---
+jobs:
+- name: deploy
+  plan:
+  - get: source-code
+    trigger: true
+  - put: cloud-foundry
+    params:
+      commands:
+      - command: create-org
+      - command: create-space
+      - command: create-service
+        service: ((redis.service))
+        plan: ((redis.plan))
+        service_instance: ((redis.service_instance))
+        wait_for_service: true
+      - command: push
+        manifest: source-code/manifest.yml
+        no_start: true
+      - command: bind-service
+        app_name: redis-example-app
+        service_instance: redis
+      - command: start
+        app_name: redis-example-app
+
+resources:
+- name: source-code
+  type: git
+  source:
+    uri: ((source_code.uri))
+    branch: ((source_code.branch))
+    private_key: ((git_key.private_key))
+
+- name: cloud-foundry
+  type: cf-cli-resource
+  source:
+    api: ((cf.api))
+    username: ((cf.username))
+    password: ((cf.password))
+    org: ((cf.org))
+    space: ((cf.space))
+
+resource_types:
+- name: cf-cli-resource
+  type: docker-image
+  source:
+    repository: nulldriver/cf-cli-resource
+    tag: latest
