@@ -23,7 +23,7 @@ jobs:
         no_start: true
       - command: bind-service
         app_name: redis-example-app
-        service_instance: redis
+        service_instance: ((redis.service_instance))
       - command: start
         app_name: redis-example-app
 
